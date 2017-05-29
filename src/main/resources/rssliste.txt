@@ -1,0 +1,1 @@
+haberler,magazin,http://rss.haberler.com/rsskonu.asp?konu=magazin
