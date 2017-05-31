@@ -7,8 +7,17 @@ package org.buyukveri.common;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -50,6 +59,7 @@ public class TextCleaner {
 
     public static String word2vecCleaner(String text) {
         try {
+
             text = text.trim();
             text = text.replaceAll("\\d.\\d", ""); //replace 15.5 with 1
             text = text.replaceAll("\\.", "\n");
@@ -58,6 +68,7 @@ public class TextCleaner {
             text = text.replaceAll("\\P{L}+\n", " "); //replace all non word chars
             text = text.replaceAll("[^\\n^\\p{L}\\p{Nd}]+", " "); //replace all non word chars
             text = text.replaceAll(" +", " "); //replace multiple whitespaces with only one
+            text = text.replaceAll("\n", " . \n");
 
             return text;
         } catch (Exception e) {
@@ -68,6 +79,11 @@ public class TextCleaner {
 
     public void cleanFolder(String inputFolder, String outputFolder) {
         try {
+            File f1 = new File(outputFolder);
+            if (!f1.exists()) {
+                f1.mkdirs();
+            }
+
             File f = new File(inputFolder);
             if (f.isDirectory()) {
                 File[] files = f.listFiles();
@@ -93,7 +109,7 @@ public class TextCleaner {
             while (s.hasNext()) {
                 String line = s.nextLine();
                 String text = word2vecCleaner(line);
-                System.out.println(text);
+//                System.out.println(text);
                 fw.write(text + "\n");
                 fw.flush();
             }
@@ -103,23 +119,118 @@ public class TextCleaner {
         }
     }
 
-    public void wordTest(File inputFile) {
+    public void wordCountFiles(File inputFile, String outputFolder) {
         try {
-            
+            File f = new File(outputFolder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
-                String line = s.nextLine();
-                Scanner s1 = new Scanner(line);
+                String line = s.nextLine().toLowerCase();
+                String text = word2vecCleaner(line);
+
+                Scanner s1 = new Scanner(text);
+
                 while (s1.hasNext()) {
                     String word = s1.next();
-                    if (word.length() <= 2) {
-                        System.out.println(word);
-                    }
+                    word = repeatingChars(word);
 
+                    int length = word.length();
+                    FileWriter fw = new FileWriter(outputFolder + "/" + length + "_harfliler.txt", true);
+                    fw.write(word + "\n");
+                    fw.flush();
+                    fw.close();
                 }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public String repeatingChars(String line) {
+        String ret = "";
+        Scanner s = new Scanner(line);
+
+        while (s.hasNext()) {
+            String word = s.next();
+            String regex = "([a-z\\d])\\1\\1";
+            String regex1 = ".*([a-z])\\1{2,}.*";
+
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(word);
+
+            if (m.find()) {
+//                System.out.println("Duplicate character " + m.group(1) + "-->" + word);
+//            word = word.replaceAll(m.group(1)+"{2,}", m.group(1));
+                word = word.replaceAll(m.group(1) + "+", m.group(1));
+                word = repeatingChars(word);
+                ret += word.trim();
+            } else {
+                ret += word.trim();
+//            return word;
+            }
+            ret += " ";
+        }
+        return ret.trim();
+    }
+
+    public void multipleWords(String inputFilePath, String outputFolder) {
+        try {
+            FileWriter cokfw = new FileWriter(outputFolder + "/" + "cok_kelime.txt");
+            FileWriter tekfw = new FileWriter(outputFolder + "/" + "tek_kelime.txt");
+
+            File inputFile = new File(inputFilePath);
+            File f = new File(outputFolder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            Scanner s = new Scanner(inputFile);
+            while (s.hasNext()) {
+                String line = s.nextLine().toLowerCase();
+                String[] tokens = line.split(" ");
+                if (tokens.length > 1) {
+                    cokfw.write(line + "\n");
+                    cokfw.flush();
+                } else {
+                    tekfw.write(line + "\n");
+                    tekfw.flush();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void uniqueWords(String infile, String outfile) {
+        try {
+            FileWriter fw = new FileWriter(outfile);
+            Scanner s = new Scanner(new File(infile));
+            s.useDelimiter("\\Z");
+            String content = s.next();
+//            System.out.println(content);
+
+            String[] words = content.split("\n");
+            Set<String> uniqueWords = new HashSet<String>();
+
+            for (String word : words) {
+                uniqueWords.add(word);
+            }
+
+            TreeSet sortedset = new TreeSet();
+            sortedset.addAll(uniqueWords);
+           
+            List list = new ArrayList();
+            list.addAll(sortedset);
+
+//            uniqueWords.stream().sorted().collect(Collectors.toList());
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                fw.write((String) it.next() + "\n");
+                fw.flush();
+            }
+
+        } catch (Exception e) {
         }
     }
 
@@ -144,7 +255,14 @@ public class TextCleaner {
 //        test = test.replaceAll("\\W", ""); 
 //        TextCleaner.word2vecCleaner(a);
         TextCleaner t = new TextCleaner();
-//        t.cleanFolder("F:/data/news", "F:/data/clean");
-        t.wordTest(new File("F:/data/clean/2009_guncel.txt"));
+//        t.cleanFolder("/Users/galip/dev/data/beyazperde/comments", "/Users/galip/dev/data/beyazperde/comments/clean");
+        t.wordCountFiles(new File("/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt"),
+                "/Users/galip/dev/data/sozluk/sozluk/");
+//        String s = t.repeatingChars("ssuuuuuuppppppppeeeeeerrrrrrccddeeff ddduuuuupppppeeeerrrr");
+//        System.out.println("s = " + s);
+//        t.multipleWords("/Users/galip/dev/data/sozluk/sozluk/kelime-listesi.txt", "/Users/galip/dev/data/sozluk/sozluk");
+//        t.uniqueWords("/Users/galip/dev/data/sozluk/sozluk/tek_kelime_hepsi.txt",
+//                "/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt");
+
     }
 }

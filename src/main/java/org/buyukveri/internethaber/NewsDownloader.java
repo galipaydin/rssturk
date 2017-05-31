@@ -79,7 +79,7 @@ public class NewsDownloader {
 
     public static void main(String[] args) {
         NewsDownloader n = new NewsDownloader();
-        n.processLinkFolder("f:/data/links", "F:/data/news");
+        n.processLinkFolder("/Users/galip/dev/data/internethaber/links", "/Users/galip/dev/data/internethaber/news");
 //        n.parseNewsPage("http://www.internethaber.com/ciadan-halepce-itirafi-1000742h.htm", "");
     }
 }

@@ -43,7 +43,7 @@ public class LinkExtractor {
     public void monthIndexPagination(String url, FileWriter fw, int start) {
         try {
             if (url.contains("?page=")) {
-                url = url.substring(0, url.indexOf("=") + 1) + +start;
+                url = url.substring(0, url.indexOf("=") + 1) + start;
 //                System.out.println("++ " + url);
             }
 
@@ -100,10 +100,30 @@ public class LinkExtractor {
             e.printStackTrace();
         }
     }
+    
+    public void month(int year, int month, String folder){
+         try {
+            String url = "http://www.internethaber.com/arsiv";
+//        http://www.internethaber.com/arsiv/2003/1
+                    String filename = year + "_" + month + ".txt";
+                    fw = new FileWriter(folder + "/" + filename);
+                    String link = url + "/" + year + "/" + month;
+                    System.out.println("link = " + link);
+
+                    monthIndexPagination(link, fw, 1);
+
+                    fw.flush();
+                    fw.close();
+                
+            
+        } catch (Exception e) {
+        }
+    }
 
     public static void main(String[] args) {
         LinkExtractor l = new LinkExtractor();
-        l.makeLinks("/Users/galip/dev/data/internethaber/links");
+//        l.makeLinks("/Users/galip/dev/data/internethaber/links");
 //        l.monthlyNewsPage("http://www.internethaber.com/arsiv/2013/4");
+l.month(2003, 1, "/Users/galip/dev/data/internethaber/links");
     }
 }
