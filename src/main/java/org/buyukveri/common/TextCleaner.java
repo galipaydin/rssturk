@@ -8,7 +8,6 @@ package org.buyukveri.common;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import static java.util.Collections.list;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -59,7 +57,6 @@ public class TextCleaner {
 
     public static String word2vecCleaner(String text) {
         try {
-
             text = text.trim();
             text = text.replaceAll("\\d.\\d", ""); //replace 15.5 with 1
             text = text.replaceAll("\\.", "\n");
@@ -69,7 +66,37 @@ public class TextCleaner {
             text = text.replaceAll("[^\\n^\\p{L}\\p{Nd}]+", " "); //replace all non word chars
             text = text.replaceAll(" +", " "); //replace multiple whitespaces with only one
             text = text.replaceAll("\n", " . \n");
+            return text;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
+    public String fastTextCleaner(String text) {
+        try {
+            String label = "";
+
+            if (text.startsWith("__label__pozitif")) {
+                label = "__label__pozitif";
+                text = text.substring(17);
+            }
+            else if (text.startsWith("__label__negatif")) {
+                    label = "__label__pozitif";
+                    text = text.substring(17);
+
+                    text = text.trim();
+                    text = text.replaceAll("\\d.\\d", ""); //replace 15.5 with 1
+//            text = text.replaceAll("\\.", "\n");
+                    text = text.replaceAll(",", " ");
+                    text = text.replaceAll("\\d", " "); //replace all digitis with whitespace
+                    text = text.replaceAll("\\P{L}+\n", " "); //replace all non word chars
+                    text = text.replaceAll("[^\\n^\\p{L}\\p{Nd}]+", " "); //replace all non word chars
+                    text = text.replaceAll(" +", " "); //replace multiple whitespaces with only one
+//            text = text.replaceAll("\n", " . \n");
+                text = label + " " + text;
+                }
+            
             return text;
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,6 +136,31 @@ public class TextCleaner {
             while (s.hasNext()) {
                 String line = s.nextLine();
                 String text = word2vecCleaner(line);
+//                System.out.println(text);
+                fw.write(text + "\n");
+                fw.flush();
+            }
+            fw.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void fasTextCleanFile(File inputFile, String outputPath) {
+        try {
+            String filename = inputFile.getName();
+            FileWriter fw = new FileWriter(outputPath + "/" + filename);
+
+            File f = new File(outputPath);
+            if (!f.exists()) {
+                System.out.println("***");
+                f.mkdirs();
+            }
+
+            Scanner s = new Scanner(inputFile);
+            while (s.hasNext()) {
+                String line = s.nextLine();
+                String text = fastTextCleaner(line);
 //                System.out.println(text);
                 fw.write(text + "\n");
                 fw.flush();
@@ -219,7 +271,7 @@ public class TextCleaner {
 
             TreeSet sortedset = new TreeSet();
             sortedset.addAll(uniqueWords);
-           
+
             List list = new ArrayList();
             list.addAll(sortedset);
 
@@ -255,14 +307,15 @@ public class TextCleaner {
 //        test = test.replaceAll("\\W", ""); 
 //        TextCleaner.word2vecCleaner(a);
         TextCleaner t = new TextCleaner();
+        t.fasTextCleanFile(new File("/Users/galip/dev/data/beyazperde/fasttext/uclabel.test"), "/Users/galip/dev/data/beyazperde/fasttext/clean");
+
 //        t.cleanFolder("/Users/galip/dev/data/beyazperde/comments", "/Users/galip/dev/data/beyazperde/comments/clean");
-        t.wordCountFiles(new File("/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt"),
-                "/Users/galip/dev/data/sozluk/sozluk/");
+//        t.wordCountFiles(new File("/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt"),
+//                "/Users/galip/dev/data/sozluk/sozluk/");
 //        String s = t.repeatingChars("ssuuuuuuppppppppeeeeeerrrrrrccddeeff ddduuuuupppppeeeerrrr");
 //        System.out.println("s = " + s);
 //        t.multipleWords("/Users/galip/dev/data/sozluk/sozluk/kelime-listesi.txt", "/Users/galip/dev/data/sozluk/sozluk");
 //        t.uniqueWords("/Users/galip/dev/data/sozluk/sozluk/tek_kelime_hepsi.txt",
 //                "/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt");
-
     }
 }
