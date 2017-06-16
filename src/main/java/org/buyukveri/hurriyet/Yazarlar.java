@@ -118,7 +118,7 @@ public class Yazarlar {
 
     public static void main(String[] args) {
         Yazarlar y = new Yazarlar("/Users/galip/dev/data/hurriyet/yazarlar");
-      y.yazarLinks("http://www.hurriyet.com.tr/yazarlar/arsiv-yazarlari/");
+      y.yazarLinks("http://www.hurriyet.com.tr/yazarlar/tum-yazarlar/");
 //      y.yazarPage("http://www.hurriyet.com.tr/yazarlar/yalcin-granit/");
 //        y.articleSave("http://www.hurriyet.com.tr/3-yasinda-meme-kanseri-oldu-16726430", "");
     }
