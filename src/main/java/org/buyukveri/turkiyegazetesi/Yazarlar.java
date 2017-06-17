@@ -55,7 +55,7 @@ public class Yazarlar {
             }
 
             for (int i = 1; i <= limit; i++) {
-                System.out.println("PAGE=" + i);
+//                System.out.println("PAGE=" + i);
                 String link = url + "/" + i;
 //                System.out.println("link = " + link);
                 Document doc = WebPageDownloader.getPage(link);
