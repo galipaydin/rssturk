@@ -19,11 +19,11 @@ import org.jsoup.select.Elements;
 public class Yazarlar {
 
     private String folder;
-    
+
     public void yazarList(String folder) {
         try {
             this.folder = folder;
-            
+
             for (int i = 1; i < 5; i++) {
                 String url = "https://www.evrensel.net/yazarlar/s/" + i;
 //                System.out.println("url = " + url);
@@ -59,14 +59,15 @@ public class Yazarlar {
 
                         Elements yazilar = doc1.getElementsByAttributeValue("class", "item");
                         for (Element yazi : yazilar) {
-                            String href = yazi.getElementsByAttributeValue("class", "item-content-date-yazar").
-                                    first().getElementsByTag("a").attr("href");
+                            if (yazi.getElementsByAttributeValue("class", "item-content-date-yazar").size()>0) {
+                                String href = yazi.getElementsByAttributeValue("class", "item-content-date-yazar").
+                                        first().getElementsByTag("a").attr("href");
 //                            System.out.println("\thref = " + href);
-                        String date = yazi.getElementsByAttributeValue("class", "item-footer")
-                                .first().text();
+                                String date = yazi.getElementsByAttributeValue("class", "item-footer")
+                                        .first().text();
 //                        System.out.println("date = " + date);
-                            articlePage(href, date, author);
-
+                                articlePage(href, date, author);
+                            }
                         }
                     }
                 }
@@ -80,7 +81,7 @@ public class Yazarlar {
 
     public void articlePage(String url, String date, String author) {
         try {
-            author =TextCleaner.cleanTurkishChars(author).toLowerCase().replaceAll(" ", "_");
+            author = TextCleaner.cleanTurkishChars(author).toLowerCase().replaceAll(" ", "_");
             Document doc = WebPageDownloader.getPage(url);
             String text = doc.getElementsByAttributeValue("class", "shortcode-content").
                     first().text().replaceFirst("Tüm yazıları", "");
