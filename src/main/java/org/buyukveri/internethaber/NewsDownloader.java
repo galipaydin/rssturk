@@ -68,8 +68,11 @@ public class NewsDownloader {
             FileWriter fw = new FileWriter(path + "/" + filename, true);
 
             Element news = doc.getElementsByAttributeValue("itemprop", "articleBody").first();
-            System.out.println(news.text());
-            fw.write(news.text() + "\n");
+//            System.out.println(news.text());
+            Element date = doc.getElementsByAttributeValue("itemprop", "datePublished").first();
+           String dt = date.attr("content");
+//            System.out.println(dt + " ;& " + news.text() + "\n");
+            fw.write(dt + " ;& " + news.text() + "\n");
             fw.flush();
         } catch (Exception e) {
             System.out.println(url);
