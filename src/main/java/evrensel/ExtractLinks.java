@@ -63,7 +63,7 @@ public class ExtractLinks {
                 System.out.println(pages.size());
                 if (pages.size() > 1) {
                     int last = Integer.parseInt(pages.get(pages.size() - 2).text());
-                    for (int i = 0; i <= last; i++) {
+                    for (int i = 1; i <= last; i++) {
                         String link = url + "/s/" + i;
                         dayLinks(link, date);
                     }
@@ -113,6 +113,8 @@ public class ExtractLinks {
         }
     }
 
+    
+    
     public static void main(String[] args) {
         ExtractLinks e = new ExtractLinks();
         e.makeLinks("/Users/galip/dev/data/news/evrensel");
