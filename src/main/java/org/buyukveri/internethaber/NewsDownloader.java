@@ -51,7 +51,7 @@ public class NewsDownloader {
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                Runnable worker = new evrensel.DownloaderThread(line, outputPath, filename);
+                Runnable worker = new org.buyukveri.evrensel.DownloaderThread(line, outputPath, filename);
                 executor.execute(worker);
             }
 

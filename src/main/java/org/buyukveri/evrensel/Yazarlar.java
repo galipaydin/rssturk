@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package evrensel;
+package org.buyukveri.evrensel;
 
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
