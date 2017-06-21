@@ -8,6 +8,8 @@ package org.buyukveri.internethaber;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.buyukveri.common.TextCleaner;
 import org.buyukveri.common.WebPageDownloader;
 import org.jsoup.nodes.Document;
@@ -32,7 +34,7 @@ public class NewsDownloader {
         }
     }
 
-    public void readLinkFile(File inputFile, String outputPath) {
+     public void readLinkFile(File inputFile, String outputPath) {
         try {
             String filename = inputFile.getName();
 
@@ -41,17 +43,27 @@ public class NewsDownloader {
                 f.mkdirs();
             }
 
+            ExecutorService executor = Executors.newFixedThreadPool(10);
+
+            System.out.println("Finished all threads");
+            
 //            String path = outputPath + "/" + filename;
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                parseNewsPage(line, outputPath, filename);
+                Runnable worker = new evrensel.DownloaderThread(line, outputPath, filename);
+                executor.execute(worker);
+            }
+
+            executor.shutdown();
+            while (!executor.isTerminated()) {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
+     
+     
     public void parseNewsPage(String url, String path, String filename) {
         try {
             filename = filename.substring(0, filename.indexOf("_"));

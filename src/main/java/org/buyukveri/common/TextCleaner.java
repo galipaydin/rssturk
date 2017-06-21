@@ -135,7 +135,10 @@ public class TextCleaner {
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
+                
                 String text = word2vecCleaner(line);
+                text = cleanTurkishChars(text);
+                text = repeatingChars(text);
 //                System.out.println(text);
                 fw.write(text + "\n");
                 fw.flush();
@@ -307,7 +310,13 @@ public class TextCleaner {
 //        test = test.replaceAll("\\W", ""); 
 //        TextCleaner.word2vecCleaner(a);
         TextCleaner t = new TextCleaner();
-        t.fasTextCleanFile(new File("/Users/galip/dev/data/beyazperde/fasttext/uclabel.test"), "/Users/galip/dev/data/beyazperde/fasttext/clean");
+        t.cleanFile(new File("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/dunya.txt"),
+                "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/clean");
+        
+        
+//      String b =   t.word2vecCleaner(a);
+//        System.out.println(b);
+//        t.fasTextCleanFile(new File("/Users/galip/dev/data/beyazperde/fasttext/uclabel.test"), "/Users/galip/dev/data/beyazperde/fasttext/clean");
 
 //        t.cleanFolder("/Users/galip/dev/data/beyazperde/comments", "/Users/galip/dev/data/beyazperde/comments/clean");
 //        t.wordCountFiles(new File("/Users/galip/dev/data/sozluk/sozluk/tek_unique.txt"),
