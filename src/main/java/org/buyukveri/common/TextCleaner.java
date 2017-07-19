@@ -310,10 +310,11 @@ public class TextCleaner {
 //        test = test.replaceAll("\\W", ""); 
 //        TextCleaner.word2vecCleaner(a);
         TextCleaner t = new TextCleaner();
-        t.cleanFile(new File("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/dunya.txt"),
-                "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/clean");
+//        t.cleanFile(new File("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/dunya.txt"),
+//                "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/clean");
         
-        
+t.cleanFolder("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled", 
+        "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled/clean");
 //      String b =   t.word2vecCleaner(a);
 //        System.out.println(b);
 //        t.fasTextCleanFile(new File("/Users/galip/dev/data/beyazperde/fasttext/uclabel.test"), "/Users/galip/dev/data/beyazperde/fasttext/clean");

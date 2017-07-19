@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.buyukveri.evrensel;
+package org.buyukveri.sol;
 
+import org.buyukveri.haber10.*;
 import java.io.File;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +15,7 @@ import java.util.concurrent.Executors;
  *
  * @author galip
  */
-public class DownloadNews {
+public class NewsDownloader {
 
     public void processLinkFolder(String linkFilesFolder, String outputFolder) {
         try {
@@ -29,7 +30,7 @@ public class DownloadNews {
         }
     }
 
-    public void readLinkFile(File inputFile, String outputPath) {
+     public void readLinkFile(File inputFile, String outputPath) {
         try {
             String filename = inputFile.getName();
 
@@ -38,26 +39,16 @@ public class DownloadNews {
                 f.mkdirs();
             }
 
-            ExecutorService executor = Executors.newFixedThreadPool(5);
-
-            System.out.println("Finished all threads");
+            ExecutorService executor = Executors.newFixedThreadPool(10);
             
-//            String path = outputPath + "/" + filename;
             Scanner s = new Scanner(inputFile);
-            int count =0;
-
             while (s.hasNext()) {
                 String line = s.nextLine();
-
-                Runnable worker = new DownloaderThread(line, outputPath, filename);
+                Runnable worker = new org.buyukveri.haber10.DownloaderThread(line, outputPath, filename);
                 executor.execute(worker);
-                count ++;
-                if(count ==10){
-                    System.out.println("Sleep");
-                    Thread.sleep(10000);
-                    count =0;
-                }
             }
+
+            System.out.println("Finished all threads");
 
             executor.shutdown();
             while (!executor.isTerminated()) {
@@ -66,18 +57,12 @@ public class DownloadNews {
             System.out.println(e.getMessage());
         }
     }
-
+     
+   
 
     public static void main(String[] args) {
-        DownloadNews d = new DownloadNews();
-        d.processLinkFolder("/Users/galip/dev/data/news/evrensel/links",
-                "/Users/galip/dev/data/news/evrensel/news");
-
-//        d.processLinkFolder("/store/data/news/evrensel/links",
-//                "/store/data/news/evrensel/news");
-
-//        d.processLinkFolder("","");
-//        d.downloadNews("https://www.evrensel.net/haber/193919/iran-da-gosteri-sirasi-hukumet-yanlilarindaydi",
-//                "", "");
+        NewsDownloader n = new NewsDownloader();
+        n.processLinkFolder("/Users/galip/dev/data/news/haber10/links", "/Users/galip/dev/data/news/haber10/news");
+//        n.parseNewsPage("http://www.internethaber.com/ciadan-halepce-itirafi-1000742h.htm", "");
     }
 }

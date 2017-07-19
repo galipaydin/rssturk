@@ -44,16 +44,15 @@ public class NewsDownloader {
             }
 
             ExecutorService executor = Executors.newFixedThreadPool(10);
-
-            System.out.println("Finished all threads");
             
-//            String path = outputPath + "/" + filename;
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                Runnable worker = new org.buyukveri.evrensel.DownloaderThread(line, outputPath, filename);
+                Runnable worker = new org.buyukveri.internethaber.DownloaderThread(line, outputPath, filename);
                 executor.execute(worker);
             }
+
+            System.out.println("Finished all threads");
 
             executor.shutdown();
             while (!executor.isTerminated()) {

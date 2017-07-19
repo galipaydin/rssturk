@@ -20,15 +20,8 @@ import org.jsoup.nodes.Document;
 public class WebPageDownloader {
 
     public static Document getPage(String url) {
-        URL u;
-        InputStream is = null;
-        DataInputStream dis;
-        String s = "";
         try {
-//            u = new URL(url);
-//            is = u.openStream();
-//            dis = new DataInputStream(new BufferedInputStream(is));
-//            Document doc = Jsoup.parse(dis, "ISO-8859-9", url);
+
             Response response = Jsoup.connect(url)
                     .ignoreContentType(true)
                     .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0")
@@ -36,24 +29,8 @@ public class WebPageDownloader {
                     .timeout(12000)
                     .followRedirects(true)
                     .execute();
-//            response.charset("UTF-8");
             Document doc = response.parse();
-
-//            Document doc = Jsoup.
-//                    parse(new URL(url).openStream(), "UTF-8", url);
-//            Document doc = Jsoup.parse(u, 5000);
-//            System.out.println(doc.html());
-//            return doc;
-//            
-//            String content = "";
-//            while ((s = dis.readLine()) != null) {
-//                content += s + "\n";
-//            }
-//            System.out.println("content = " + content);
-//            System.out.println("doc. = " + doc.title());
             return doc;
-            // return Jsoup.parse(content);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -85,6 +62,7 @@ public class WebPageDownloader {
 
     public static void main(String[] args) {
 //        WebPageDownloader.getFile("/Users/galip/NetBeansProjects/NewsDownloader/src/main/resources/commentspage.html");
-        WebPageDownloader.getPage("http://www.beyazperde.com/filmler/elestiriler-beyazperde/?page=8");
+      Document doc =  WebPageDownloader.getPage("http://finans.mynet.com/haber/detay/borsa/yatirimciya-kirmizi-bayrakli-uyari/334/");
+        System.out.println(doc.html());
     }
 }

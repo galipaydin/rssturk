@@ -37,6 +37,7 @@ public class LinkExtractor {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -122,8 +123,8 @@ public class LinkExtractor {
 
     public static void main(String[] args) {
         LinkExtractor l = new LinkExtractor();
-//        l.makeLinks("/Users/galip/dev/data/internethaber/links");
+        l.makeLinks("/Users/galip/dev/data/internethaber/links");
 //        l.monthlyNewsPage("http://www.internethaber.com/arsiv/2013/4");
-l.month(2003, 1, "/Users/galip/dev/data/internethaber/links");
+//        l.month(2003, 1, "/Users/galip/dev/data/internethaber/links");
     }
 }

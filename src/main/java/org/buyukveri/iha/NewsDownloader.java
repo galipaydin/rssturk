@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.buyukveri.evrensel;
+package org.buyukveri.iha;
 
+import org.buyukveri.mynet.*;
 import java.io.File;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +15,7 @@ import java.util.concurrent.Executors;
  *
  * @author galip
  */
-public class DownloadNews {
+public class NewsDownloader {
 
     public void processLinkFolder(String linkFilesFolder, String outputFolder) {
         try {
@@ -37,28 +38,17 @@ public class DownloadNews {
             if (!f.exists()) {
                 f.mkdirs();
             }
+            ExecutorService executor = Executors.newFixedThreadPool(1);
 
-            ExecutorService executor = Executors.newFixedThreadPool(5);
-
-            System.out.println("Finished all threads");
-            
-//            String path = outputPath + "/" + filename;
             Scanner s = new Scanner(inputFile);
-            int count =0;
-
             while (s.hasNext()) {
                 String line = s.nextLine();
-
-                Runnable worker = new DownloaderThread(line, outputPath, filename);
+                String url = "http://finans.mynet.com" + line;
+                Runnable worker = new org.buyukveri.mynet.DownloaderThread(url, outputPath, filename);
                 executor.execute(worker);
-                count ++;
-                if(count ==10){
-                    System.out.println("Sleep");
-                    Thread.sleep(10000);
-                    count =0;
-                }
+//                parseNewsPage(url, fw);
             }
-
+            System.out.println("Finished all threads");
             executor.shutdown();
             while (!executor.isTerminated()) {
             }
@@ -67,17 +57,9 @@ public class DownloadNews {
         }
     }
 
-
     public static void main(String[] args) {
-        DownloadNews d = new DownloadNews();
-        d.processLinkFolder("/Users/galip/dev/data/news/evrensel/links",
-                "/Users/galip/dev/data/news/evrensel/news");
-
-//        d.processLinkFolder("/store/data/news/evrensel/links",
-//                "/store/data/news/evrensel/news");
-
-//        d.processLinkFolder("","");
-//        d.downloadNews("https://www.evrensel.net/haber/193919/iran-da-gosteri-sirasi-hukumet-yanlilarindaydi",
-//                "", "");
+        NewsDownloader n = new NewsDownloader();
+//        n.parseNewsPage("http://finans.mynet.com/haber/detay/analiz/altin-analiz/122070/", null);
+        n.processLinkFolder("/Users/galip/dev/data/mynet", "/Users/galip/dev/data/mynet/news");
     }
 }

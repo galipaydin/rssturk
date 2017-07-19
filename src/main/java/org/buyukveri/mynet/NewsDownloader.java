@@ -6,11 +6,9 @@
 package org.buyukveri.mynet;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.Scanner;
-import org.buyukveri.common.WebPageDownloader;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -34,35 +32,27 @@ public class NewsDownloader {
     public void readLinkFile(File inputFile, String outputPath) {
         try {
             String filename = inputFile.getName();
-            
+
             File f = new File(outputPath);
             if (!f.exists()) {
                 f.mkdirs();
             }
+            ExecutorService executor = Executors.newFixedThreadPool(1);
 
-            FileWriter fw = new FileWriter(outputPath + "/" + filename);
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
                 String url = "http://finans.mynet.com" + line;
-                System.out.println(url);
-                parseNewsPage(url, fw);
+                Runnable worker = new org.buyukveri.mynet.DownloaderThread(url, outputPath, filename);
+                executor.execute(worker);
+//                parseNewsPage(url, fw);
+            }
+            System.out.println("Finished all threads");
+            executor.shutdown();
+            while (!executor.isTerminated()) {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-    }
-
-    public void parseNewsPage(String url, FileWriter fw) {
-        try {
-            Document doc = WebPageDownloader.getPage(url);
-            Element e = doc.getElementById("haber-detay");
-            String news = e.getElementsByTag("div").first().text();
-            fw.write(news + "\n");
-            fw.flush();
-        } catch (Exception e) {
-            System.out.println(url);
-            System.out.printf(e.getMessage());
         }
     }
 

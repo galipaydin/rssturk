@@ -18,22 +18,21 @@ import org.jsoup.select.Elements;
  */
 public class LinkExtractor {
 
-   private static String path = "/Users/galip/dev/data/mynet";
- 
-    
+    private static String path = "/Users/galip/dev/data/mynet";
+
     public void extractLinks(String url, FileWriter fw) {
         try {
             Document doc = WebPageDownloader.getPage(url);
             Elements boxes = doc.getElementsByAttributeValueContaining("class", "fmNewsBox");
             for (Element box : boxes) {
                 String newsurl = box.getElementsByTag("a").attr("href");
-                fw.write(newsurl + "\n");
-                            fw.flush();
-
-//                System.out.println("\t" + newsurl);
+                if (!newsurl.startsWith("http")) {
+                    fw.write(newsurl + "\n");
+                }
+                fw.flush();
+                System.out.println("\t" + newsurl);
             }
             fw.flush();
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -43,8 +42,6 @@ public class LinkExtractor {
         try {
             FileWriter fw = new FileWriter(path + "/" + year + "_" + cat + ".txt");
             String url = "http://finans.mynet.com/haber/arsiv/";
-//        + "25/5/2011"
-//        + "/otomotiv/";
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, year);
             for (int month = 0; month < 12; month++) {
@@ -65,7 +62,7 @@ public class LinkExtractor {
     }
 
     public void getLinks() {
-        String[] cats = {"borsa", "doviz", "ekonomi", "dunya", "emlak", "otomotiv", "turizm", "analiz"};
+        String[] cats = {"doviz", "ekonomi", "dunya", "emlak", "otomotiv", "turizm", "analiz", "borsa"};
         for (int i = 2011; i < 2018; i++) {
             for (String cat : cats) {
                 dateMaker(i, cat);
@@ -80,5 +77,4 @@ public class LinkExtractor {
         n.getLinks();
     }
 
- 
 }

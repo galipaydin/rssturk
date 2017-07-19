@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.buyukveri.internethaber;
+package org.buyukveri.haber10;
 
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
@@ -36,21 +36,22 @@ public class DownloaderThread implements Runnable {
 
             Document doc = WebPageDownloader.getPage(url);
 
-            Element e = doc.getElementsByAttributeValue("class", "whc").first();
-            String tur = e.getElementsByAttributeValue("itemprop", "title").last().text();
-            tur = TextCleaner.cleanTurkishChars(tur).replaceAll(" ", "_");
+            String cat = doc.getElementsByAttributeValueContaining("class", "tags").first().text();
 
-            filename = filename + "_" + tur + ".txt";
+            cat = TextCleaner.cleanTurkishChars(cat);
+            cat = cat.replaceAll(" ", "_").toLowerCase();
 
-            FileWriter fw = new FileWriter(path + "/" + filename, true);
+            if (!cat.equals("tum_yazilari")) {
+                filename = filename + "_" + cat + ".txt";
+                FileWriter fw = new FileWriter(path + "/" + filename, true);
 
-            Element news = doc.getElementsByAttributeValue("itemprop", "articleBody").first();
-//            System.out.println(news.text());
-            Element date = doc.getElementsByAttributeValue("itemprop", "datePublished").first();
-            String dt = date.attr("content");
-//            System.out.println(dt + " ;& " + news.text() + "\n");
-            fw.write(dt + " ;& " + news.text() + "\n");
-            fw.flush();
+                String text = doc.getElementById("neytivcontent").text();
+                text = text.replaceAll("\n", "");
+                fw.write(text + "\n");
+                fw.flush();
+                fw.close();
+                fwerr.close();
+            }
         } catch (Exception e) {
             try {
                 System.out.println(url);
@@ -60,6 +61,14 @@ public class DownloaderThread implements Runnable {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
+        }
+    }
+
+    public void haberPage(String url, int year, int month) {
+        try {
+            System.out.println(url);
+
+        } catch (Exception e) {
         }
     }
 
