@@ -5,6 +5,7 @@
  */
 package org.buyukveri.turkiyegazetesi;
 
+import java.io.File;
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
 import org.buyukveri.common.WebPageDownloader;
@@ -22,9 +23,14 @@ public class Yazarlar {
 
     public Yazarlar(String folder) {
         this.folder = folder;
+            File f = new File(folder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
     }
 
     void yazarList(String url) {
+        
         Document doc = WebPageDownloader.getPage(url);
         Elements authors = doc.getElementsByAttributeValueContaining("class", "Yazarlar-sag-kutular");
         System.out.println("size() = " + authors.size());

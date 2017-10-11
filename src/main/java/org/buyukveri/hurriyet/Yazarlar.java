@@ -5,6 +5,7 @@
  */
 package org.buyukveri.hurriyet;
 
+import java.io.File;
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
 import org.buyukveri.common.WebPageDownloader;
@@ -22,6 +23,11 @@ public class Yazarlar {
 
     public Yazarlar(String folder) {
         this.folder = folder;
+        File f = new File(folder);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
     }
 
     public void yazarLinks(String url) {
@@ -93,7 +99,7 @@ public class Yazarlar {
     public void articleSave(String url, String date) {
         try {
             System.out.println(url + " - " + date);
-            
+
             date = date.replaceAll(" ", "_").toLowerCase();
 //            date = date.substring(date.indexOf(" ")).trim().replaceAll(" ", "_").toLowerCase();
             date = TextCleaner.cleanTurkishChars(date);
@@ -107,9 +113,9 @@ public class Yazarlar {
                 String content = doc.getElementsByAttributeValueContaining("class", "news-text").first().text();
 //            System.out.println(content);
                 FileWriter fw = new FileWriter(this.folder + "/" + author + ".txt", true);
-            fw.write(date + ";&" + content + "\n");
-            fw.flush();
-            fw.close();
+                fw.write(date + ";&" + content + "\n");
+                fw.flush();
+                fw.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +124,7 @@ public class Yazarlar {
 
     public static void main(String[] args) {
         Yazarlar y = new Yazarlar("/Users/galip/dev/data/hurriyet/yazarlar");
-      y.yazarLinks("http://www.hurriyet.com.tr/yazarlar/tum-yazarlar/");
+        y.yazarLinks("http://www.hurriyet.com.tr/yazarlar/tum-yazarlar/");
 //      y.yazarPage("http://www.hurriyet.com.tr/yazarlar/yalcin-granit/");
 //        y.articleSave("http://www.hurriyet.com.tr/3-yasinda-meme-kanseri-oldu-16726430", "");
     }

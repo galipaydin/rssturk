@@ -43,8 +43,8 @@ public class NewsDownloader {
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                String url = "http://finans.mynet.com" + line;
-                Runnable worker = new org.buyukveri.mynet.DownloaderThread(url, outputPath, filename);
+
+                Runnable worker = new org.buyukveri.iha.DownloaderThread(line, outputPath, filename);
                 executor.execute(worker);
 //                parseNewsPage(url, fw);
             }
@@ -60,6 +60,6 @@ public class NewsDownloader {
     public static void main(String[] args) {
         NewsDownloader n = new NewsDownloader();
 //        n.parseNewsPage("http://finans.mynet.com/haber/detay/analiz/altin-analiz/122070/", null);
-        n.processLinkFolder("/Users/galip/dev/data/mynet", "/Users/galip/dev/data/mynet/news");
+        n.processLinkFolder("/Users/galip/dev/data/news/iha/links", "/Users/galip/dev/data/news/iha/news");
     }
 }

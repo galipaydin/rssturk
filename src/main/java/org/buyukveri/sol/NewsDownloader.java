@@ -5,7 +5,6 @@
  */
 package org.buyukveri.sol;
 
-import org.buyukveri.haber10.*;
 import java.io.File;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -44,7 +43,7 @@ public class NewsDownloader {
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
                 String line = s.nextLine();
-                Runnable worker = new org.buyukveri.haber10.DownloaderThread(line, outputPath, filename);
+                Runnable worker = new org.buyukveri.sol.DownloaderThread(line, outputPath, filename);
                 executor.execute(worker);
             }
 
@@ -62,7 +61,7 @@ public class NewsDownloader {
 
     public static void main(String[] args) {
         NewsDownloader n = new NewsDownloader();
-        n.processLinkFolder("/Users/galip/dev/data/news/haber10/links", "/Users/galip/dev/data/news/haber10/news");
+        n.processLinkFolder("/Users/galip/dev/data/news/sol/links", "/Users/galip/dev/data/news/sol/news");
 //        n.parseNewsPage("http://www.internethaber.com/ciadan-halepce-itirafi-1000742h.htm", "");
     }
 }

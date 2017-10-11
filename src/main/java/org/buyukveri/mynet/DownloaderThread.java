@@ -37,12 +37,12 @@ public class DownloaderThread implements Runnable {
 //            String fname = outputPath + "/" + System.currentTimeMillis() + "_" +  filename;
             FileWriter fw = new FileWriter(fname, true);
             Document doc = WebPageDownloader.getPage(url);
-
-//            Element e = doc.getElementsByAttributeValueContaining("class", "nw-news-detail-content").first();
+//            System.out.println(doc);
+            Element e = doc.getElementsByAttributeValue("itemprop", "articleBody").first();
 //            System.out.println(e.toString());
-            Element e = doc.getElementById("haber-detay");
-
-            String news = e.getElementById("contextual").text();
+            
+            String news = e.text();
+//            System.out.println(news);
             fw.write(news + "\n");
             fw.flush();
         } catch (Exception e) {
@@ -53,7 +53,9 @@ public class DownloaderThread implements Runnable {
                 fwerr.flush();
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
+                ex.printStackTrace();
             }
+            e.printStackTrace();
         }
     }
 

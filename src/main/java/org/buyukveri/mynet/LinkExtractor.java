@@ -5,6 +5,7 @@
  */
 package org.buyukveri.mynet;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.Calendar;
 import org.buyukveri.common.WebPageDownloader;
@@ -18,7 +19,7 @@ import org.jsoup.select.Elements;
  */
 public class LinkExtractor {
 
-    private static String path = "/Users/galip/dev/data/mynet";
+    private static String path = "/Users/galip/dev/data/news/mynet";
 
     public void extractLinks(String url, FileWriter fw) {
         try {
@@ -40,7 +41,7 @@ public class LinkExtractor {
 
     public void dateMaker(int year, String cat) {
         try {
-            FileWriter fw = new FileWriter(path + "/" + year + "_" + cat + ".txt");
+            FileWriter fw = new FileWriter(path + "/links/" + year + "_" + cat + ".txt");
             String url = "http://finans.mynet.com/haber/arsiv/";
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, year);
@@ -62,6 +63,19 @@ public class LinkExtractor {
     }
 
     public void getLinks() {
+        File f = new File(path);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        f = new File(path + "/links");
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        f = new File(path + "/news");
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
         String[] cats = {"doviz", "ekonomi", "dunya", "emlak", "otomotiv", "turizm", "analiz", "borsa"};
         for (int i = 2011; i < 2018; i++) {
             for (String cat : cats) {

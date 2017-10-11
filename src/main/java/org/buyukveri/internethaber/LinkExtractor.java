@@ -5,6 +5,7 @@
  */
 package org.buyukveri.internethaber;
 
+import java.io.File;
 import java.io.FileWriter;
 import org.buyukveri.common.WebPageDownloader;
 import org.jsoup.nodes.Document;
@@ -21,6 +22,11 @@ public class LinkExtractor {
 
     public void makeLinks(String folder) {
         try {
+           File f = new File(folder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            
             String url = "http://www.internethaber.com/arsiv";
 //        http://www.internethaber.com/arsiv/2003/1
             for (int i = 2003; i < 2018; i++) {
@@ -123,7 +129,7 @@ public class LinkExtractor {
 
     public static void main(String[] args) {
         LinkExtractor l = new LinkExtractor();
-        l.makeLinks("/Users/galip/dev/data/internethaber/links");
+        l.makeLinks("/Users/galip/dev/data/news/internethaber/links");
 //        l.monthlyNewsPage("http://www.internethaber.com/arsiv/2013/4");
 //        l.month(2003, 1, "/Users/galip/dev/data/internethaber/links");
     }

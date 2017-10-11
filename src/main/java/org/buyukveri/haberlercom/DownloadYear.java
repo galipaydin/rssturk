@@ -5,6 +5,7 @@
  */
 package org.buyukveri.haberlercom;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,6 +16,12 @@ public class DownloadYear {
 
     public void downloadYear(String folderPath, int year) {
         try {
+            
+           File f = new File(folderPath);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            
             ExecutorService executor = Executors.newFixedThreadPool(8);
             for (String category : categories) {
                 Runnable worker = new NewsParser(folderPath, category, year);
@@ -34,19 +41,19 @@ public class DownloadYear {
     }
 
     public static void main(String[] args) {
-        System.out.println("Usage: NewsParser folderPath category year startMonth endMonth");
-        String folderPath, year;
-        if (args.length != 2) {
-            System.out.println("Invalid no of parameters");
-        } else {
-            folderPath = args[0];
-            DownloadYear d = new DownloadYear();
-            year = args[1];
-            d.downloadYear(folderPath, Integer.parseInt(year));
-        }
+//        System.out.println("Usage: NewsParser folderPath category year startMonth endMonth");
+//        String folderPath, year;
+//        if (args.length != 2) {
+//            System.out.println("Invalid no of parameters");
+//        } else {
+//            folderPath = args[0];
+//            DownloadYear d = new DownloadYear();
+//            year = args[1];
+//            d.downloadYear(folderPath, Integer.parseInt(year));
+//        }
 
-//        DownloadYear d = new DownloadYear();
-//        d.downloadYear("F:/dataset/news", 2006);
+        DownloadYear d = new DownloadYear();
+        d.downloadYear("/Users/galip/dev/data/news/haberlercom", 2017);
 
     }
 }

@@ -5,12 +5,10 @@
  */
 package org.buyukveri.sol;
 
-import org.buyukveri.haber10.*;
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
 import org.buyukveri.common.WebPageDownloader;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 /**
  *
@@ -34,25 +32,26 @@ public class DownloaderThread implements Runnable {
     public void parseNewsPage(String url, String path, String filename) {
         try {
             filename = filename.substring(0, filename.indexOf("_"));
-
+            System.out.println("filename = " + filename);
             Document doc = WebPageDownloader.getPage(url);
 
-            String cat = doc.getElementsByAttributeValueContaining("class", "tags").first().text();
-
-            cat = TextCleaner.cleanTurkishChars(cat);
-            cat = cat.replaceAll(" ", "_").toLowerCase();
-
-            if (!cat.equals("tum_yazilari")) {
-                filename = filename + "_" + cat + ".txt";
-                FileWriter fw = new FileWriter(path + "/" + filename, true);
-
-                String text = doc.getElementById("neytivcontent").text();
-                text = text.replaceAll("\n", "");
-                fw.write(text + "\n");
-                fw.flush();
-                fw.close();
-                fwerr.close();
-            }
+            String cat = doc.getElementsByAttributeValueContaining("class", "singlenews-body").first().text();
+            System.out.println(cat);
+            
+//            cat = TextCleaner.cleanTurkishChars(cat);
+//            cat = cat.replaceAll(" ", "_").toLowerCase();
+//
+//            if (!cat.equals("tum_yazilari")) {
+//                filename = filename + "_" + cat + ".txt";
+//                FileWriter fw = new FileWriter(path + "/" + filename, true);
+//
+//                String text = doc.getElementById("neytivcontent").text();
+//                text = text.replaceAll("\n", "");
+//                fw.write(text + "\n");
+//                fw.flush();
+//                fw.close();
+//                fwerr.close();
+//            }
         } catch (Exception e) {
             try {
                 System.out.println(url);
@@ -62,6 +61,7 @@ public class DownloaderThread implements Runnable {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
+            e.printStackTrace();
         }
     }
 

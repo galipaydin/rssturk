@@ -5,6 +5,7 @@
  */
 package org.buyukveri.sol;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.Calendar;
 import org.buyukveri.common.WebPageDownloader;
@@ -21,8 +22,17 @@ public class LinkExtractor {
     private String folder = "/Users/galip/dev/data/news/sol/links";
     private FileWriter fw;
 
+    public LinkExtractor() {
+        File f = new File(folder);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+    }
+
     public void pagination(String url, String cat) {
         try {
+
             Document doc = WebPageDownloader.getPage(url);
             Element pagination = doc.getElementsByAttributeValueContaining("class", "pager-last").first();
             Element a = pagination.getElementsByTag("a").first();
@@ -37,7 +47,7 @@ public class LinkExtractor {
                 System.out.println(link);
                 newsLink(link, fw);
             }
-                        fw.close();
+            fw.close();
 
         } catch (Exception e) {
             e.printStackTrace();

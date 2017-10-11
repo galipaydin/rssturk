@@ -5,6 +5,7 @@
  */
 package org.buyukveri.evrensel;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.Calendar;
 import org.buyukveri.common.WebPageDownloader;
@@ -23,6 +24,20 @@ public class ExtractLinks {
     public void makeLinks(String folder) {
         try {
             this.folder = folder;
+            File f = new File(folder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            f = new File(folder + "/links");
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            f = new File(folder + "/news");
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            
+
 //            FileWriter fw = new FileWriter(folder);
             String url = "https://www.evrensel.net/arsiv";
 //        https://www.evrensel.net/arsiv/20000101/tarih
@@ -85,7 +100,7 @@ public class ExtractLinks {
             for (Element item : items) {
                 String link = item.getElementsByTag("a").first().attr("href");
 //                System.out.println("link = " + link);
-                fw.write(link+"\n");
+                fw.write(link + "\n");
                 fw.flush();
 //                downloadNews(link);
             }
@@ -99,7 +114,7 @@ public class ExtractLinks {
             Document doc = WebPageDownloader.getPage(url);
             Element item = doc.getElementsByAttributeValue("class", "cats").first();
             String category = "nocat";
-            if (item.getElementsByTag("a").size() >0) {
+            if (item.getElementsByTag("a").size() > 0) {
                 category = item.getElementsByTag("a").first().text();
 //                System.out.println("cat = " + category);
             }
@@ -113,8 +128,6 @@ public class ExtractLinks {
         }
     }
 
-    
-    
     public static void main(String[] args) {
         ExtractLinks e = new ExtractLinks();
         e.makeLinks("/Users/galip/dev/data/news/evrensel");

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.buyukveri.diken;
+package org.buyukveri.bianet;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,22 +18,21 @@ import org.jsoup.select.Elements;
  */
 public class LinkExtractor {
 
-    private static String path = "/Users/galip/dev/data/news/diken/links";
+    private static String path = "/Users/galip/dev/data/news/bianet/links";
 
     public void linkMaker(String cat, int last) {
         try {
+            
             File f = new File(path);
             if (!f.exists()) {
                 f.mkdirs();
             }
+            
             FileWriter fw;
-            if (!cat.equals("agora")) {
                 fw = new FileWriter(path + "/" + cat + ".txt", true);
-            } else {
-                fw = new FileWriter(path + "/yazarlar.txt", true);
-            }
 
-            String url = "http://www.diken.com.tr/kategori/" + cat;
+                
+            String url = "http://bianet.org/bianet/haberler/" + cat;
             for (int i = 1; i < last; i++) {
                 String link = url + "/page/" + i;
                 System.out.println(link);
@@ -67,8 +66,8 @@ public class LinkExtractor {
 
     public void getLinks() {
 //        String[] cats = { };
-        String[] cats = {"spor", "dunya", "medya", "keyif", "aktuel",
-            "analiz", "dikene-takilanlar", "diken11","agora", "diken-ozel", "vpn-haber"};
+        String[] cats = {"agora", "diken-ozel", "spor", "dunya", "medya", "keyif", "aktuel",
+            "analiz", "dikene-takilanlar", "diken11", "vpn-haber"};
         for (String cat : cats) {
             System.out.println(cat);
             linkMaker(cat, 1000);

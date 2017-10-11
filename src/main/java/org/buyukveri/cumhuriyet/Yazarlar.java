@@ -5,6 +5,7 @@
  */
 package org.buyukveri.cumhuriyet;
 
+import java.io.File;
 import java.io.FileWriter;
 import org.buyukveri.common.TextCleaner;
 import org.buyukveri.common.WebPageDownloader;
@@ -22,6 +23,10 @@ public class Yazarlar {
 
     public Yazarlar(String folder) {
         this.folder = folder;
+         File f = new File(folder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
     }
 
     void yazarList(String url) {

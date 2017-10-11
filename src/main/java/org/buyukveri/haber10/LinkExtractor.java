@@ -5,6 +5,7 @@
  */
 package org.buyukveri.haber10;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.Calendar;
 import org.buyukveri.common.WebPageDownloader;
@@ -23,6 +24,22 @@ public class LinkExtractor {
 
     public void dateMaker() {
         try {
+            
+           File f = new File(folder);
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            f = new File(folder + "/links");
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            f = new File(folder + "/news");
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+
+
+            
 //        http://www.haber10.com/arsiv/2005/08/03
             String url = "http://www.haber10.com/arsiv/";
             for (int year = 2005; year < 2007; year++) {
@@ -49,6 +66,7 @@ public class LinkExtractor {
 
     public void dayIndexPagination(String url, int year, int month) {
         try {
+            System.out.println(url);
             Document doc = WebPageDownloader.getPage(url);
                 Element pagination = doc.getElementsByAttributeValueContaining("class", "pagination").first();
                 Elements pages = pagination.getElementsByTag("a");

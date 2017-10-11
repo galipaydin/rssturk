@@ -37,7 +37,7 @@ public class NewsDownloader {
             if (!f.exists()) {
                 f.mkdirs();
             }
-            ExecutorService executor = Executors.newFixedThreadPool(1);
+            ExecutorService executor = Executors.newFixedThreadPool(10);
 
             Scanner s = new Scanner(inputFile);
             while (s.hasNext()) {
@@ -59,6 +59,6 @@ public class NewsDownloader {
     public static void main(String[] args) {
         NewsDownloader n = new NewsDownloader();
 //        n.parseNewsPage("http://finans.mynet.com/haber/detay/analiz/altin-analiz/122070/", null);
-        n.processLinkFolder("/Users/galip/dev/data/mynet", "/Users/galip/dev/data/mynet/news");
+        n.processLinkFolder("/Users/galip/dev/data/news/mynet/links", "/Users/galip/dev/data/news/mynet/news");
     }
 }
