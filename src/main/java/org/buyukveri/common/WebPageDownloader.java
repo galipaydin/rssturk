@@ -62,7 +62,8 @@ public class WebPageDownloader {
 
     public static void main(String[] args) {
 //        WebPageDownloader.getFile("/Users/galip/NetBeansProjects/NewsDownloader/src/main/resources/commentspage.html");
-      Document doc =  WebPageDownloader.getPage("http://finans.mynet.com/haber/detay/borsa/yatirimciya-kirmizi-bayrakli-uyari/334/");
+//      Document doc =  WebPageDownloader.getPage("http://finans.mynet.com/haber/detay/borsa/yatirimciya-kirmizi-bayrakli-uyari/334/");
+      Document doc =  WebPageDownloader.getPage("http://www.sabah.com.tr");
         System.out.println(doc.html());
     }
 }

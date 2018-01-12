@@ -37,7 +37,6 @@ public class ExtractLinks {
                 f.mkdirs();
             }
             
-
 //            FileWriter fw = new FileWriter(folder);
             String url = "https://www.evrensel.net/arsiv";
 //        https://www.evrensel.net/arsiv/20000101/tarih

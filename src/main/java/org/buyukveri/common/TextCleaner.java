@@ -290,7 +290,8 @@ public class TextCleaner {
     }
 
     public static void main(String[] args) {
-        String a = "!#^%&/()=*?-_;.,:<>£$½§{[]} Lenovo... { [] Windows 10 işletim sistemiyle çalışan dünyanın en ince dönüştürülebilir Intel Core i7 işlemcili."
+        String a = "!#^%&/()=*?-_;.,:<>£$½§{[]} Lenovo... { [] Windows 10 işletim sistemiyle çalışan dünyanın en ince "
+                + "dönüştürülebilir Intel Core i7 işlemcili."
                 + "15.5 saate kadar pil ömrü sunan dizüstü bilgisayarı Yoga 910 ile 2K ekranlı."
                 + "18 saate kadar pil ömrü sunan. Android Tab 3 Plus modelleri ile tüm dünyayı bir kez daha şaşırttı."
                 + "Dünya’nın 1 numaralı PC. üreticisi Lenovo, Tüketici Elektroniği Fuarı IFA’da."
@@ -310,11 +311,13 @@ public class TextCleaner {
 //        test = test.replaceAll("\\W", ""); 
 //        TextCleaner.word2vecCleaner(a);
         TextCleaner t = new TextCleaner();
+       String s = TextCleaner.word2vecCleaner(a);
+        System.out.println(s);
 //        t.cleanFile(new File("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/dunya.txt"),
 //                "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/dunya/clean");
         
-t.cleanFolder("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled", 
-        "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled/clean");
+//t.cleanFolder("/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled", 
+//        "/Users/galip/NetBeansProjects/dl4j-examples/dl4j-examples/src/main/resources/author2vec/unlabeled/clean");
 //      String b =   t.word2vecCleaner(a);
 //        System.out.println(b);
 //        t.fasTextCleanFile(new File("/Users/galip/dev/data/beyazperde/fasttext/uclabel.test"), "/Users/galip/dev/data/beyazperde/fasttext/clean");
